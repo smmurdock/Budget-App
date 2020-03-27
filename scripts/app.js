@@ -13,7 +13,7 @@ const UIController = (() => {
   };
 
   return {
-    getInput() {
+    getInput: () => {
       return {
         type: document.querySelector(DOMstrings.inputType).value, // Will be either inc or exp
         description: document.querySelector(DOMstrings.inputDescription).value,
@@ -30,6 +30,8 @@ const UIController = (() => {
 // GLOBAL APP CONTROLLER
 const controller = ((budgetCtrl, UICtrl) => {
   const setupEventListeners = () => {
+    const DOM = UICtrl.getDOMstrings();
+
     document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
 
     document.addEventListener('keypress', e => {
@@ -39,16 +41,22 @@ const controller = ((budgetCtrl, UICtrl) => {
     });
   };
 
-  const DOM = UICtrl.getDOMstrings();
-
   const ctrlAddItem = () => {
     // 1. Get the field input data
     const input = UIController.getInput();
-    console.log(input);
 
     // 2. Add item to the budget controller
     // 3. Add the new item to the UI
     // 4. Calculate the budget
     // 5. Display the budget
   };
+
+  return {
+    init: () => {
+      console.log('Application has started.');
+      setupEventListeners();
+    }
+  };
 })(budgetController, UIController);
+
+controller.init();
