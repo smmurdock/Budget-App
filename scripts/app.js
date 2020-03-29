@@ -47,6 +47,7 @@ const budgetController = (() => {
       // return the new element
       return newItem;
     },
+
     testing: function() {
       console.log(data);
     }
@@ -129,6 +130,12 @@ const controller = ((budgetCtrl, UICtrl) => {
         ctrlAddItem();
       }
     });
+  };
+
+  const updateBudget = () => {
+    // 1. Calculate the budget
+    // 2. Return the budget
+    // 3. Display the budget on the UI
   };
 
   const ctrlAddItem = () => {
