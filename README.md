@@ -16,3 +16,10 @@ Goal: Enter income or expenses: have income input entered under the income colum
 - Data Module
   - Add the new item to data structure
   - Calculate the budget
+
+### Step 2:
+- Add EventHandler to individual inputs
+  - Delete the item from the UI
+  - Delte the item from the data structure
+- Recalculate the budget
+- Update the UI
