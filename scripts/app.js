@@ -96,6 +96,21 @@ const UIController = (() => {
       document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
     },
 
+    clearFields: () => {
+      let fields, fieldsArr;
+
+      fields = document.querySelectorAll(
+        DOMstrings.inputDescription + ',' + DOMstrings.inputValue
+      );
+      fieldsArr = Array.prototype.slice.call(fields);
+
+      fieldsArr.forEach((current, index, array) => {
+        current.value = '';
+      });
+
+      fieldsArr[0].focus();
+    },
+
     getDOMstrings: () => {
       return DOMstrings;
     }
@@ -130,7 +145,7 @@ const controller = ((budgetCtrl, UICtrl) => {
       UICtrl.addListItem(newItem, input.type);
 
       // 4. Clear the fields
-      // UICtrl.clearFields();
+      UICtrl.clearFields();
 
       // 5. Calculate and update budget
       // updateBudget();
