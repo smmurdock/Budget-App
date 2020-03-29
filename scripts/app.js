@@ -1,15 +1,25 @@
 // BUDGET CONTROLLER
 const budgetController = (() => {
-  let Expense = function(id, description, value) {
+  const Expense = function(id, description, value) {
     this.id = id;
     this.description = description;
     this.value = value;
   };
 
-  let Income = function(id, description, value) {
+  const Income = function(id, description, value) {
     this.id = id;
     this.description = description;
     this.value = value;
+  };
+
+  const calculateTotal = type => {
+    let sum = 0;
+
+    data.allItems[type].forEach(cur => {
+      sum += cur.value;
+    });
+
+    data.totals[type] = sum;
   };
 
   let data = {
@@ -20,7 +30,9 @@ const budgetController = (() => {
     totals: {
       exp: 0,
       inc: 0
-    }
+    },
+    budget: 0,
+    percentage: -1
   };
 
   return {
@@ -46,6 +58,31 @@ const budgetController = (() => {
 
       // return the new element
       return newItem;
+    },
+
+    calculateBudget: () => {
+      // calculate total income and expenses
+      calculateTotal('exp');
+      calculateTotal('inc');
+
+      // calculate the budget: income minus expenses
+      data.budget = data.totals.inc - data.totals.exp;
+
+      // calculate the percentage of income that was spent
+      if (data.totals.inc > 0) {
+        data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+      } else {
+        data.percentage = -1;
+      }
+    },
+
+    getBudget: () => {
+      return {
+        budget: data.budget,
+        totalInc: data.totals.inc,
+        totalExp: data.totals.exp,
+        percentage: data.percentage
+      };
     },
 
     testing: function() {
@@ -134,8 +171,13 @@ const controller = ((budgetCtrl, UICtrl) => {
 
   const updateBudget = () => {
     // 1. Calculate the budget
+    budgetCtrl.calculateBudget();
+
     // 2. Return the budget
+    let budget = budgetCtrl.getBudget();
+
     // 3. Display the budget on the UI
+    console.log(budget);
   };
 
   const ctrlAddItem = () => {
@@ -155,7 +197,7 @@ const controller = ((budgetCtrl, UICtrl) => {
       UICtrl.clearFields();
 
       // 5. Calculate and update budget
-      // updateBudget();
+      updateBudget();
 
       // 6. Calculate and update percentages
       // updatePercentages();
