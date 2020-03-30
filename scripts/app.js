@@ -60,6 +60,20 @@ const budgetController = (() => {
       return newItem;
     },
 
+    deleteItem: (type, id) => {
+      let ids, index;
+
+      ids = data.allItems[type].map(current => {
+        return current.id;
+      });
+
+      index = ids.indexOf(id);
+
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1);
+      }
+    },
+
     calculateBudget: () => {
       // calculate total income and expenses
       calculateTotal('exp');
@@ -103,7 +117,8 @@ const UIController = (() => {
     budgetLabel: '.budget__value',
     incomeLabel: '.budget__income--value',
     expensesLabel: '.budget__expenses--value',
-    percentageLabel: '.budget__expenses--percentage'
+    percentageLabel: '.budget__expenses--percentage',
+    container: '.container'
   };
 
   return {
@@ -136,6 +151,11 @@ const UIController = (() => {
 
       // Insert the HTML into the DOM
       document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+    },
+
+    deleteListItem: selectorID => {
+      let el = document.getElementById(selectorID);
+      el.parentNode.removeChild(el);
     },
 
     clearFields: () => {
@@ -187,6 +207,11 @@ const controller = ((budgetCtrl, UICtrl) => {
         ctrlAddItem();
       }
     });
+
+    // we use container because it's common to both income and expenses
+    document
+      .querySelector(DOM.container)
+      .addEventListener('click', ctrlDeleteItem);
   };
 
   const updateBudget = () => {
@@ -221,6 +246,26 @@ const controller = ((budgetCtrl, UICtrl) => {
 
       // 6. Calculate and update percentages
       // updatePercentages();
+    }
+  };
+
+  const ctrlDeleteItem = event => {
+    let itemID, splitID, type, ID;
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+    if (itemID) {
+      splitID = itemID.split('-');
+      type = splitID[0];
+      ID = parseInt(splitID[1]);
+
+      // delete the item from the data structure
+      budgetCtrl.deleteItem(type, ID);
+
+      // delete the item from the UI
+      UICtrl.deleteListItem(itemID);
+
+      // Update and show the new budget
+      updateBudget();
     }
   };
 
