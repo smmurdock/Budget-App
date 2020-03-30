@@ -23,3 +23,10 @@ Goal: Enter income or expenses: have income input entered under the income colum
   - Delte the item from the data structure
 - Recalculate the budget
 - Update the UI
+
+### Step 3:
+- Calculate expense percentages
+- Update percentages in UI/Expenses list
+- Display dynamic month/year above summary
+- Number formatting
+- Improve input field UX
